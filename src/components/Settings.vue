@@ -32,16 +32,6 @@
           <p>Default value is "Uniform"</p>
         </div>
       </div>
-      <div class='row' v-if='soundAvailable'>
-        <div class='col'>SoundCloud track</div>
-        <div class='col'>
-          <input type='text' v-model='soundCloudLink'>
-          <a href='#' @click.prevent='loadSound'>load</a>
-        </div>
-      </div>
-      <div class='row' v-if='soundAvailable'>
-        <audio ref='player' controls='' autoplay='' preload autobuffer></audio>
-      </div>
       <div class='row'>
         <div class='col'>Particles count </div>
         <div class='col'><input type='number' :step='particleCountDelta' v-model='particlesCount' @keyup.enter='onSubmit' autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
@@ -120,16 +110,12 @@
 import bus from '../lib/bus.js';
 import isSmallScreen from '../lib/isSmallScreen.js';
 import appState from '../lib/appState.js';
-import SoundLoader from '../lib/sound/soundLoader.js';
-import SoundCloudAudioSource from '../lib/sound/audioSource.js';
+// Tofu adaptation: remove the disabled, account-dependent SoundCloud integration.
 import config from '../lib/config.js';
 import Syntax from './help/Syntax.vue';
 import HelpIcon from './help/Icon.vue';
 import CodeEditor from './CodeEditor.vue';
 import Inputs from './Inputs.vue';
-
-// Temporary disable this until API is finished.
-const soundAvailable = config.isAudioEnabled;
 
 export default {
   name: 'Settings',
@@ -143,8 +129,6 @@ export default {
   mounted() {
     bus.on('scene-ready', this.onSceneReady, this);
     bus.on('bbox-change', this.updateBBox, this);
-
-    if (soundAvailable) this.soundLoader = new SoundLoader(this.$refs.player);
   },
   beforeUnmount() {
     bus.off('scene-ready', this.onSceneReady, this);
@@ -152,7 +136,6 @@ export default {
   },
   data() {
     return {
-      soundCloudLink: 'https://soundcloud.com/mrfijiwiji/yours-truly',
       vectorField: null,
       settingsPanel: appState.settingsPanel,
       inputsModel: scene.inputsModel,
@@ -162,7 +145,6 @@ export default {
       dropProbability: 0,
       timeStep: 0,
       selectedColorMode: 0,
-      soundAvailable: soundAvailable,
       // TODO: Need something better for help management?
       selectedColorHelp: false,
       syntaxHelpVisible: false,
@@ -226,16 +208,6 @@ export default {
         return;
       } 
       this.scene.moveBoundingBox({[key]: value});
-    },
-    loadSound() {
-      if (!this.soundLoader) return;
-      this.soundLoader.loadStream(this.soundCloudLink).then(e => {
-        if (!this.audioSource) {
-          this.audioSource = new SoundCloudAudioSource(this.$refs.player); 
-        }
-        this.audioSource.playStream(this.soundLoader.streamUrl())
-      });
-      // TODO: Error handling
     },
     goToOrigin() {
       this.scene.resetBoundingBox();
