@@ -23,6 +23,8 @@
         </li><li>
         Stay tuned for updates on <a href='https://twitter.com/anvaka' class='highlighted'>Twitter</a>
         </li><li>
+        See my other projects at <a href='https://anvaka.com' class='highlighted'>anvaka.com</a>
+        </li><li>
         <a href='https://www.reddit.com/r/fieldplay/' class='highlighted'>/r/fieldplay</a> - join our small subreddit
         </li>
 
