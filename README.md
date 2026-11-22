@@ -322,4 +322,6 @@ I learned a lot building this project. I hope you too liked this short voyage in
 
 Please [let me know](https://twitter.com/anvaka) what you think.
 
+See my other projects at [anvaka.com](https://anvaka.com).
+
 Have fun!
